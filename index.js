@@ -1,64 +1,66 @@
-function createEmployeeRecord(array) {
+function createEmployeeRecord([firstName, familyName, title, payPerHour]) {
     return {
-        firstName: array[0],
-        familyName: array[1],
-        title: array[2],
-        payPerHour: array[3],
-        timeInEvents: [],
-        timeOutEvents: []
+      firstName,
+      familyName,
+      title,
+      payPerHour,
+      timeInEvents: [],
+      timeOutEvents: []
     };
-};
-
-function createEmployeeRecords(array) {
-    return array.map(createEmployeeRecord);
-};
-
-function createTimeInEvent(employee, dateStamp) {
-    const [date, hour] = dateStamp.split(' ');
-
+  }
+  
+  function createEmployeeRecords(arrays) {
+    return arrays.map(createEmployeeRecord);
+  }
+  
+  function createTimeInEvent(employee, dateStamp) {
+    let [date, hour] = dateStamp.split(" ");
     employee.timeInEvents.push({
-        type: "TimeIn",
-        hour: parseInt(hour, 10),
-        date: date
+      type: "TimeIn",
+      hour: parseInt(hour, 10),
+      date: date
     });
-
     return employee;
-};
-
-function createTimeOutEvent(employee, dateStamp) {
-    const [date, hour] = dateStamp.split(' ');
-
+  }
+  
+  function createTimeOutEvent(employee, dateStamp) {
+    let [date, hour] = dateStamp.split(" ");
     employee.timeOutEvents.push({
-        type: "TimeOut",
-        hour: parseInt(hour, 10),
-        date: date
+      type: "TimeOut",
+      hour: parseInt(hour, 10),
+      date: date
     });
-
     return employee;
-};
-
-function hoursWorkedOnDate(employee, date) {
-    const timeIn = employee.timeInEvents.find(e => e.date === date).hour;
-    const timeOut = employee.timeOutEvents.find(e => e.date === date).hour;
-
-    return (timeOut - timeIn) / 100;
-};
-
-function wagesEarnedOnDate(employee, date) {
-    return hoursWorkedOnDate(employee, date) * employee.payPerHour;
-};
-
-function allWagesFor(employee) {
-    return employee.timeInEvents.reduce((total, e) => total + wagesEarnedOnDate(employee, e.date), 0);
-};
-
-function findEmployeeByFirstName(array, firstName) {
-    return array.find(e => e.firstName === firstName);
-};
-
-function calculatePayroll(employees) {
-    return employees.reduce((total, e) => total + allWagesFor(e), 0);
-};
+  }
+  
+  function hoursWorkedOnDate(employee, targetDate) {
+    const timeIn = employee.timeInEvents.find(event => event.date === targetDate);
+    const timeOut = employee.timeOutEvents.find(event => event.date === targetDate);
+    return (timeOut.hour - timeIn.hour) / 100;
+  }
+  
+  function wagesEarnedOnDate(employee, date) {
+    const hours = hoursWorkedOnDate(employee, date);
+    return hours * employee.payPerHour;
+  }
+  
+  function allWagesFor(employee) {
+    const datesWorked = employee.timeInEvents.map(event => event.date);
+    const payable = datesWorked.reduce((total, date) => {
+      return total + wagesEarnedOnDate(employee, date);
+    }, 0);
+    return payable;
+  }
+  
+  function findEmployeeByFirstName(srcArray, firstName) {
+    return srcArray.find(employee => employee.firstName === firstName);
+  }
+  
+  function calculatePayroll(employeeRecords) {
+    return employeeRecords.reduce((total, employee) => {
+      return total + allWagesFor(employee);
+    }, 0);
+  }  
 /*
  We're giving you this function. Take a look at it, you might see some usage
  that's new and different. That's because we're avoiding a well-known, but
