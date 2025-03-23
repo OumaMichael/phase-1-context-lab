@@ -86,7 +86,7 @@ function createEmployeeRecord(arr) {
    * @returns {Number} - Total wages for all dates
    *
    * NOTE: This implementation uses .bind(this) to avoid a well-known lost context bug.
-   */
+   
   const allWagesFor = function () {
     const eligibleDates = this.timeInEvents.map(function (e) {
       return e.date;
@@ -98,7 +98,7 @@ function createEmployeeRecord(arr) {
     }.bind(this), 0);
   
     return payable;
-  };
+};*/
   
   /**
    * findEmployeeByFirstName
@@ -142,7 +142,7 @@ function createEmployeeRecord(arr) {
 
  As a result, the lessons for this function will pass *and* it will be available
  for you to use if you need it!
- 
+ */
 
 const allWagesFor = function () {
     const eligibleDates = this.timeInEvents.map(function (e) {
@@ -156,4 +156,3 @@ const allWagesFor = function () {
     return payable
 }
 
-*/
