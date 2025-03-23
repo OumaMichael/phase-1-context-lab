@@ -84,13 +84,21 @@ function createEmployeeRecord(arr) {
    * allWagesFor
    * Uses the employee record as context (this)
    * @returns {Number} - Total wages for all dates
+   *
+   * NOTE: This implementation uses .bind(this) to avoid a well-known lost context bug.
    */
-  function allWagesFor() {
-    // 'this' refers to the employee record
-    const eligibleDates = this.timeInEvents.map(e => e.date);
-    const payable = eligibleDates.reduce((memo, d) => memo + wagesEarnedOnDate(this, d), 0);
+  const allWagesFor = function () {
+    const eligibleDates = this.timeInEvents.map(function (e) {
+      return e.date;
+    });
+  
+    const payable = eligibleDates.reduce(function (memo, d) {
+      // Use call to set the context correctly for wagesEarnedOnDate
+      return memo + wagesEarnedOnDate.call(this, d);
+    }.bind(this), 0);
+  
     return payable;
-  }
+  };
   
   /**
    * findEmployeeByFirstName
@@ -109,7 +117,6 @@ function createEmployeeRecord(arr) {
    */
   function calculatePayroll(employeeRecords) {
     return employeeRecords.reduce((total, record) => {
-      // Using call to set the context to the current employee record
       return total + allWagesFor.call(record);
     }, 0);
   }
@@ -125,7 +132,6 @@ function createEmployeeRecord(arr) {
     findEmployeeByFirstName,
     calculatePayroll
   };
-
   
   
 
