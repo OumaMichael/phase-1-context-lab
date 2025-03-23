@@ -1,6 +1,3 @@
-// ------------------------------
-// Employee Record Functions
-// ------------------------------
 
 /**
  * createEmployeeRecord
@@ -116,9 +113,8 @@ function createEmployeeRecord(arr) {
       return total + allWagesFor.call(record);
     }, 0);
   }
-
   
-module.exports = {
+  module.exports = {
     createEmployeeRecord,
     createEmployeeRecords,
     createTimeInEvent,
@@ -128,7 +124,9 @@ module.exports = {
     allWagesFor,
     findEmployeeByFirstName,
     calculatePayroll
-};
+  };
+
+  
   
 
 /*
@@ -138,7 +136,7 @@ module.exports = {
 
  As a result, the lessons for this function will pass *and* it will be available
  for you to use if you need it!
- */
+ 
 
 const allWagesFor = function () {
     const eligibleDates = this.timeInEvents.map(function (e) {
@@ -152,3 +150,4 @@ const allWagesFor = function () {
     return payable
 }
 
+*/
